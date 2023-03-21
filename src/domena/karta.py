@@ -1,7 +1,6 @@
 from enum import Enum
 
 
-# class syntax
 class Znak(Enum):
     SRCE = 'SRCE'
     PIK = 'PIK'
