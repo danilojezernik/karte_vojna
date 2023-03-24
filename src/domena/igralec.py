@@ -6,3 +6,10 @@ class Igralec:
         self.karte: list[Karta] = []
         self.ime: str = ime
         self.priimek: str = priimek
+
+    def tocke(self) -> int:
+        vsota = 0
+
+        for karta in self.karte:
+            vsota += karta.vrednost
+        return vsota
