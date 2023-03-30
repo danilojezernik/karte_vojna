@@ -6,8 +6,9 @@ from src.domena.karta import Karta, Znak
 
 class Miza:
     def __init__(self):
-        self.karte: list[Karta] = []
+        self.vrzene_karte: list[Karta] = []
         self.igralci: list[Igralec] = []
+        self.st_rund: int = 0
 
     def dodaj_igralca(self, igralec: Igralec):
         self.igralci.append(igralec)
@@ -33,30 +34,39 @@ class Miza:
     def vrzite_karte(self):
         for igralec in self.igralci:
             dobljena_karta = igralec.karte.pop(0)
-            self.karte.append(dobljena_karta)
+            self.vrzene_karte.append(dobljena_karta)
 
     def preglej_vrzene_karte(self):
-        max_karta = self.karte[0]
+        max_karta = self.vrzene_karte[0]
         max_index = 0
         mesto = 0
-        for karta in self.karte:
-
+        for karta in self.vrzene_karte:
             if karta.vrednost > max_karta.vrednost:
                 max_index = mesto
                 max_karta = karta
             mesto += 1
 
         zmagovalec = self.igralci[max_index]
-        zmagovalec.karte += self.karte
-        self.karte = []
+
+        self.vrzene_karte.pop(0)
+
+        zmagovalec.karte += self.vrzene_karte
+        self.vrzene_karte = []
+
+        self.st_rund += 1
 
     def konec_igre(self) -> bool:
         stevec = 0
+        kos = []
         for igralec in self.igralci:
             if igralec.tocke() > 0:
                 stevec += 1
             else:
-                self.igralci.remove(igralec)
+                kos.append(igralec)
+
+        for igralec in kos:
+            self.igralci.remove(igralec)
+
         if stevec == 1:
             return True
         else:
